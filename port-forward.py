@@ -18,21 +18,20 @@
 
 import socket
 import sys
-import thread
+import _thread
 import time
 
 def main(setup, error, args):
     # open file for error messages
-    sys.stderr = file(error, 'a')
 
     # if args
     if (len(args) > 0):
         for settings in parse_args(args):
-            thread.start_new_thread(server, settings)
+            _thread.start_new_thread(server, settings)
     else:
         # read settings for port forwarding
         for settings in parse(setup):
-            thread.start_new_thread(server, settings)
+            _thread.start_new_thread(server, settings)
     # wait for <ctrl-c>
     while True:
        time.sleep(60)
@@ -64,10 +63,10 @@ def server(*settings):
             client_socket = dock_socket.accept()[0]
             server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server_socket.connect((settings[1], settings[2]))
-            thread.start_new_thread(forward, (client_socket, server_socket))
-            thread.start_new_thread(forward, (server_socket, client_socket))
+            _thread.start_new_thread(forward, (client_socket, server_socket))
+            _thread.start_new_thread(forward, (server_socket, client_socket))
     finally:
-        thread.start_new_thread(server, settings)
+        _thread.start_new_thread(server, settings)
 
 def forward(source, destination):
     string = ' '
@@ -81,3 +80,4 @@ def forward(source, destination):
 
 if __name__ == '__main__':
     main('port-forward.config', 'error.log', sys.argv[1:])
+
