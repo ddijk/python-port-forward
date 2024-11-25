@@ -50,3 +50,6 @@ Start the application at command line with 'sudo python port-forward.py' and sto
 ```
 Error messages are stored in file 'error.log'.
 ```
+
+## Alias (db is available on localhost:8000)
+alias pf='cd /c/mydir && python portforward.py 8000:localhost:5432'
